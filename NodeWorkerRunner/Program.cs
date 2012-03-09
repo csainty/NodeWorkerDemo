@@ -30,7 +30,8 @@ namespace NodeWorkerRunner
                 {
                     process.WaitForExit();
                     logger.Info("Finished! ExitCode: " + process.ExitCode);
-                    Environment.Exit(process.ExitCode); // Run a second time
+                    Environment.Exit(0);    // Run a single time and stop please
+                    //Environment.Exit(process.ExitCode); // Run a second time
                 }
             }
             catch (Exception e)
