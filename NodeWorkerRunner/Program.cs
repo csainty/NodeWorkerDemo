@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using NLog;
-using NLog.Config;
 
 namespace NodeWorkerRunner
 {
@@ -18,20 +14,24 @@ namespace NodeWorkerRunner
             logger.Info("Starting NodeWorkerRunner");
             try
             {
-                var scriptName = ConfigurationManager.AppSettings["EntryPoint"];
-                logger.Info("Running " + scriptName);
-                var process = Process.Start(new ProcessStartInfo
+                var start = new ProcessStartInfo
                 {
-                    Arguments = scriptName,
-                    CreateNoWindow = true,
+                    Arguments = "app/index.js",
                     FileName = "node.exe",
-                });
-                using (process)
+                    UseShellExecute = false
+                };
+
+                // Copy all the appSettings into environment variables. This allows them to be accessed from process.env in your node code.
+                foreach (var setting in ConfigurationManager.AppSettings.AllKeys)
+                {
+                    start.EnvironmentVariables.Add(setting, ConfigurationManager.AppSettings[setting]);
+                }
+
+                using (var process = Process.Start(start))
                 {
                     process.WaitForExit();
                     logger.Info("Finished! ExitCode: " + process.ExitCode);
-                    Environment.Exit(0);    // Run a single time and stop please
-                    //Environment.Exit(process.ExitCode); // Run a second time
+                    Environment.Exit(process.ExitCode); // Pass through the exit code on a successful run. This puts node in control of worker lifetime.
                 }
             }
             catch (Exception e)

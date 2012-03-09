@@ -1,11 +1,11 @@
 var logentries = require('node-logentries');
 var log = logentries.logger({
-	userkey:'92e4a151-9424-4b1b-beff-b662cb918757',
-	host: 'AppHarbor',
-	log: 'Default'
+    userkey: process.env.LOGENTRIES_ACCOUNT_KEY,
+    host: process.env.LOGENTRIES_LOCATION.split('/')[0],
+    log: process.env.LOGENTRIES_LOCATION.split('/')[1]
 });
 
 log.info("NodeWorker Running");
-setTimeout(function() {
-	process.exit(100);
+setTimeout(function () {
+    process.exit(0);    // Runs once
 }, 5000);
