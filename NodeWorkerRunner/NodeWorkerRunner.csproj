@@ -57,6 +57,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="node.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="App.config" />
     <Content Include="app\node_modules\node-logentries\package.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

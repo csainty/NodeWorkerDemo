@@ -35,7 +35,7 @@ namespace NodeWorkerRunner
             }
             catch (Exception e)
             {
-                logger.ErrorException("Failed", e);
+                logger.ErrorException("Failed - " + e.Message, e);
                 Environment.Exit(0);    // Don't try run again
             }
         }
